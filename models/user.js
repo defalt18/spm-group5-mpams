@@ -18,6 +18,7 @@ const userSchema = new Schema({
   accountType: {
     type: Number,
     required: true,
+    default: -1,
   },
   professionalInfo: {
     profession: [
@@ -27,11 +28,9 @@ const userSchema = new Schema({
     ],
     address: {
       type: String,
-      required: true,
     },
     mobileNo: {
       type: String,
-      required: true,
     },
     imagesUris: [
       {
