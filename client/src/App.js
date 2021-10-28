@@ -1,13 +1,20 @@
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import Auth from "./pages/Auth";
+import { AUTH, DASHBOARD, FIRST_LOGIN } from "./routes";
+import NotFound from "./pages/NotFound";
+import Dashboard from "./pages/Dashboard";
+import Register from "./pages/Register";
+
 function App() {
   return (
-    <div className="bg-gray-900 text-white h-screen w-screen grid place-items-center">
-      <div>
-        <p className="text-4xl font-bold">Multi-Profession Appointment Management System</p>
-        <a className="text-base text-center mt-5" href="//localhost:5000">
-          Backend running at port 5000
-        </a>
-      </div>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact component={Auth} path={AUTH} />
+        <Route exact component={Dashboard} path={DASHBOARD} />
+        <Route exact component={Register} path={FIRST_LOGIN} />
+        <Route component={NotFound} />
+      </Switch>
+    </Router>
   );
 }
 
