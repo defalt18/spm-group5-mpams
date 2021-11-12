@@ -4,23 +4,11 @@ import loginLogo from "assets/images/login_picture.jpg";
 import { useHistory } from "react-router-dom";
 import { FIRST_LOGIN } from "routes";
 import Page from "components/Page";
-// import { SIGN_UP_URL, REDIRECT_URL } from "../../constants";
-// import axios from "axios";
 
 function Auth() {
   const history = useHistory();
 
   const onClick = useCallback(async () => {
-    // const authWindow = window.open(SIGN_UP_URL, "_blank");
-    // authWindow.focus();
-    // const result = await axios.get(REDIRECT_URL, {
-    //   headers: {
-    //     "Access-Control-Allow-Origin": "*",
-    //   },
-    // });
-    // console.log(result, SIGN_UP_URL, REDIRECT_URL);
-    // const data = await fetch(SIGN_UP_URL);
-    // console.log(data);
     history.push(FIRST_LOGIN);
   }, [history]);
 

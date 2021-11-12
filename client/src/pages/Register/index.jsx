@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 import { DASHBOARD } from "routes";
 import c from "classnames";
 import { useToggle } from "react-use";
+import { setUser } from "utils";
+import { useUserContext } from "hooks/useUser";
 
 const Input = React.memo(({ label, ...rest }) => {
   const [active, toggle] = useToggle(false);
@@ -25,6 +27,7 @@ const Input = React.memo(({ label, ...rest }) => {
 
 function Register() {
   const history = useHistory();
+  const { setUser: setContextValue } = useUserContext();
   const [userDetails, setDetails] = useState(() => ({
     name: "",
     email: "",
@@ -33,9 +36,10 @@ function Register() {
     profession: "",
   }));
 
-  const onClick = useCallback(() => {
+  const onClick = useCallback(async () => {
     history.push(DASHBOARD);
-  }, [history]);
+    await setUser(setContextValue, userDetails);
+  }, [history, setContextValue, userDetails]);
 
   const handleChange = useCallback(
     (_event) => {

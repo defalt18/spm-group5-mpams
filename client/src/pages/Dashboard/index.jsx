@@ -1,22 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import Page from "components/Page";
-import Loader from "../../components/Loader";
+import { useUserContext } from "hooks/useUser";
+import Sidebar from "./components/Sidebar";
+import { VIEWS } from "./dashboard-model";
+import Overview from "./components/Overview";
+import Appointments from "./components/Appointments";
+import People from "./components/People";
 
 function Dashboard() {
+  const contextValue = useUserContext();
+  const { user } = contextValue;
+  const [view, toggleView] = useState(VIEWS.Overview);
+
+  if (!user) return null;
+
+  const renderContent = () => {
+    switch (view) {
+      case VIEWS.Overview:
+        return <Overview user={user} />;
+
+      case VIEWS.Appointments:
+        return <Appointments user={user} />;
+
+      case VIEWS.People:
+        return <People user={user} />;
+
+      default:
+        return null;
+    }
+  };
+
   return (
     <Page className="flex">
-      <div className="w-3/12 bg-gray-800 text-white shadow-2xl pt-8 px-8 font-bold text-2xl">
-        Sidebar
-      </div>
-      <div className="flex-1 grid place-items-center bg-gray-100 grid gap-12 grid-cols-2 grid-rows-2 p-8">
-        {Array(4)
-          .fill(null)
-          .map(() => (
-            <div className="shadow-xl bg-white h-full w-full rounded-2xl grid place-items-center">
-              <Loader type="comp" />
-            </div>
-          ))}
-      </div>
+      <Sidebar toggleView={toggleView} view={view} {...contextValue} />
+      {renderContent()}
     </Page>
   );
 }

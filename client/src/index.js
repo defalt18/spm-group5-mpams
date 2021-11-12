@@ -1,14 +1,6 @@
-import React, { Suspense } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
-import Loader from "components/Loader";
+import MPAMS from "./MPAMS";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Suspense fallback={<Loader />}>
-      <App />
-    </Suspense>
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+ReactDOM.render(<MPAMS />, document.getElementById("root"));
