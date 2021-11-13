@@ -5,7 +5,7 @@ import CalendarHeader from "./components/CalendarHeader";
 import { CalendarCell } from "./components/CalendarCell";
 
 function Calendar(props) {
-  const { getLabel, isDisabled, isToday, ...rest } = useCalendarData();
+  const { getCalendarDate, ...rest } = useCalendarData();
 
   return (
     <div className="w-full">
@@ -17,11 +17,9 @@ function Calendar(props) {
         >
           {_map(Array(7).fill(0), (cell, index) => (
             <CalendarCell
-              date={rest.date}
-              disabled={isDisabled(indexRow, index)}
+              actualDate={rest.date}
+              date={getCalendarDate(indexRow, index)}
               isLast={index === 6}
-              label={getLabel(indexRow, index)}
-              today={isToday(indexRow, index)}
             />
           ))}
         </div>

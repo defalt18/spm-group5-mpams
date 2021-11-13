@@ -6,6 +6,9 @@
   margin: 0;
 }
 
+.min-w-120 {
+  min-width: 525px;
+}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

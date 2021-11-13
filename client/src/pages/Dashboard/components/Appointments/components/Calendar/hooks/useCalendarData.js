@@ -1,13 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import {
-  addMonths,
-  getDate,
-  getDay,
-  getDaysInMonth,
-  getMonth,
-  getYear,
-  isToday,
-} from "date-fns";
+import { addMonths, getDay, getDaysInMonth, getMonth, getYear } from "date-fns";
 
 export function useCalendarData() {
   const [date, setDate] = useState(Date.now());
@@ -32,66 +24,36 @@ export function useCalendarData() {
     setDate((currDate) => addMonths(currDate, -1));
   }, [setDate]);
 
-  const getLabel = useCallback(
+  const getCalendarDate = useCallback(
     (indexRow, index) => {
       const firstRow = 7 - startDay;
       const day = index + 1 + firstRow + (indexRow - 1) * 7;
 
       if (indexRow === 0) {
         return index < startDay
-          ? totalDaysPrevMonth - startDay + index + 1
-          : index + 1 - startDay;
+          ? new Date(
+              getYear(date),
+              getMonth(date) - 1 >= 0 ? getMonth(date) - 1 : 11,
+              totalDaysPrevMonth - startDay + index + 1
+            )
+          : new Date(getYear(date), getMonth(date), index + 1 - startDay);
       }
 
-      if (day > totalDays) return day - totalDays;
+      if (day > totalDays)
+        return new Date(
+          getYear(date),
+          (getMonth(date) + 1) % 12,
+          day - totalDays
+        );
 
-      return day;
+      return new Date(getYear(date), getMonth(date), day);
     },
-    [startDay, totalDays, totalDaysPrevMonth]
-  );
-
-  const isDisabled = useCallback(
-    (indexRow, index) => {
-      if (indexRow === 0) {
-        if (
-          getDay(
-            new Date(getYear(date), getMonth(date), index + 1 - startDay)
-          ) === 0 ||
-          index < startDay
-        )
-          return true;
-      }
-
-      const firstRow = 7 - startDay;
-      const day = index + 1 + firstRow + (indexRow - 1) * 7 + 1;
-      if (
-        getDay(new Date(getYear(date), getMonth(date), getDate(date) + day)) ===
-        0
-      )
-        return true;
-
-      return day - 1 > totalDays;
-    },
-    [startDay, date, totalDays]
-  );
-
-  const isTodayByCalendar = useCallback(
-    (indexRow, index) => {
-      const newDate = new Date(
-        getYear(date),
-        getMonth(date),
-        getLabel(indexRow, index)
-      );
-      return isToday(newDate);
-    },
-    [date, getLabel]
+    [startDay, totalDays, totalDaysPrevMonth, date]
   );
 
   return {
     date,
-    getLabel,
-    isDisabled,
-    isToday: isTodayByCalendar,
+    getCalendarDate,
     nextMonthToggle,
     prevMonthToggle,
   };
