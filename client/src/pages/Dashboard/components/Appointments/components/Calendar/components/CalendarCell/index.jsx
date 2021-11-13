@@ -28,7 +28,7 @@ export const CalendarCell = React.memo((props) => {
       <div
         className={c(
           "h-24 w-full p-2 flex justify-end",
-          !isLast ? "border-r border-gray-400" : "",
+          !isLast ? "border-r border-gray-400 border-opacity-50" : "",
           disabled ? "bg-gray-200" : "cursor-pointer"
         )}
         onClick={!disabled ? handleClick : _noop}

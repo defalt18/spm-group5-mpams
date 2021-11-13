@@ -13,7 +13,7 @@ function Calendar(props) {
       {_map(Array(6).fill(0), (row, indexRow) => (
         <div
           key={indexRow}
-          className="grid grid-cols-7 w-full border border-gray-400 border-t-0"
+          className="grid grid-cols-7 w-full border border-gray-400 border-t-0 border-opacity-50"
         >
           {_map(Array(7).fill(0), (cell, index) => (
             <CalendarCell
