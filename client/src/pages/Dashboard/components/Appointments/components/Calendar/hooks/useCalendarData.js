@@ -19,6 +19,11 @@ export function useCalendarData() {
 
   const totalDays = useMemo(() => getDaysInMonth(date), [date]);
 
+  const totalDaysPrevMonth = useMemo(
+    () => getDaysInMonth(addMonths(date, -1)),
+    [date]
+  );
+
   const nextMonthToggle = useCallback(() => {
     setDate((currDate) => addMonths(currDate, 1));
   }, [setDate]);
@@ -33,14 +38,16 @@ export function useCalendarData() {
       const day = index + 1 + firstRow + (indexRow - 1) * 7;
 
       if (indexRow === 0) {
-        return index < startDay ? "" : index + 1 - startDay;
+        return index < startDay
+          ? totalDaysPrevMonth - startDay + index + 1
+          : index + 1 - startDay;
       }
 
-      if (day > totalDays) return "";
+      if (day > totalDays) return day - totalDays;
 
       return day;
     },
-    [startDay, totalDays]
+    [startDay, totalDays, totalDaysPrevMonth]
   );
 
   const isDisabled = useCallback(

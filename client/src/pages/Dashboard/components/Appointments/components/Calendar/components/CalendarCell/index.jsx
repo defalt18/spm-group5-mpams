@@ -33,7 +33,7 @@ export const CalendarCell = React.memo((props) => {
         )}
         onClick={!disabled ? handleClick : _noop}
       >
-        <div className={c("text-lg")}>
+        <div className={c("text-lg", disabled ? "text-gray-500" : "")}>
           {!today ? (
             <span>{label}</span>
           ) : (

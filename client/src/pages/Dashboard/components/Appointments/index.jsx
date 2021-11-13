@@ -6,7 +6,7 @@ const Calendar = React.lazy(() => import("./components/Calendar"));
 function Appointments(props) {
   const { user } = props;
   return (
-    <div className="flex-1 bg-gray-100 gap-12 p-8">
+    <div className="flex-1 bg-gray-100 p-8 h-full overflow-scroll">
       <div className="font-bold text-2xl mb-6 flex items-center gap-x-2">
         <span>Appointment Calendar</span>
         <CalendarTodayTwoToneIcon />

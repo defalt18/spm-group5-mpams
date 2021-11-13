@@ -31,7 +31,7 @@ function Dashboard() {
   };
 
   return (
-    <Page className="flex">
+    <Page className="flex overflow-scroll">
       <Sidebar toggleView={toggleView} view={view} {...contextValue} />
       {renderContent()}
     </Page>

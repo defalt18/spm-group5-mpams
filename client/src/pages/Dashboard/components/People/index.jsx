@@ -6,9 +6,9 @@ function People(props) {
   return (
     <div className="flex-1 bg-gray-100 p-8">
       <p className="font-bold text-2xl mb-4">Professionals</p>
-      <div className="my-3 bg-gray-200 rounded-3xl p-3 flex gap-x-1 items-center">
+      <div className="my-3 bg-gray-200 rounded-3xl p-3 px-6 flex gap-x-1 items-center">
         <input
-          className="text-lg w-full bg-gray-200 outline-none ml-3"
+          className="text-lg w-full bg-gray-200 outline-none"
           placeholder="Search people"
         />
         <SearchRoundedIcon />
