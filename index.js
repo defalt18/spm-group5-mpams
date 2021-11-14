@@ -33,23 +33,11 @@ mongoose
     )
   );
 
-//mongo store
-app.use(
-  session({
-    resave: false,
-    saveUninitialized: false,
-    secret: SECRET,
-    store: MongoStore.create({
-      mongoUrl: DB_URI,
-      ttl: 12 * 60 * 60,
-    }),
-  })
-);
-
 const { isLoggedIn } = require("./middleware/isLoggedIn");
 
 app.use((req, res, next) => {
   req.user = req.body.user;
+  next();
 });
 
 const authRoutes = require("./router/authRoutes");
@@ -71,7 +59,7 @@ app.get("/api/profession", isLoggedIn, async (req, res) => {
   });
 });
 
-app.get("api/profession/:name", isLoggedIn, async (req, res) => {
+app.get("/api/profession/:name", isLoggedIn, async (req, res) => {
   const allProfUser = await User.find({ profession: req.params.name });
   res.send({
     message: "Here are all the Professionals!!",
@@ -85,5 +73,5 @@ app.get("/api/allUsers", isLoggedIn, async (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("Started!");
+  return res.send("Started!");
 });

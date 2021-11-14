@@ -1,7 +1,7 @@
 const User = require("../models/user");
 
 const isLoggedIn = async (req, res, next) => {
-  if (req.user._id) {
+  if (req.user && req.user._id) {
     const currUser = await User.findById(req.user._id);
     if (currUser == req.User) return next();
   } else {
