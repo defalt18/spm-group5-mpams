@@ -5,7 +5,10 @@
   "scripts": {
     "start": "node index.js"
   },
-  "repository": "https://github.com/MR-1301/spm-group5-mpams.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MR-1301/spm-group5-mpams.git"
+  },
   "author": "Mahir Ratanpara <201801004@daiict.ac.in>",
   "license": "MIT",
   "dependencies": {
@@ -25,5 +28,12 @@
     "passport": "^0.5.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0"
-  }
+  },
+  "description": "",
+  "bugs": {
+    "url": "https://github.com/MR-1301/spm-group5-mpams/issues"
+  },
+  "homepage": "https://github.com/MR-1301/spm-group5-mpams#readme",
+  "devDependencies": {},
+  "keywords": []
 }
