@@ -49,6 +49,7 @@ app.use("/api/workspace", workspaceRoutes);
 const appointmentRoutes = require("./router/appointmentRouter");
 app.use("/api/appointment", appointmentRoutes);
 
+//filter routes!!
 const User = require("./models/user");
 
 app.get("/api/profession", isLoggedIn, async (req, res) => {
@@ -59,6 +60,7 @@ app.get("/api/profession", isLoggedIn, async (req, res) => {
   });
 });
 
+//all the users with particular profession
 app.get("/api/profession/:name", isLoggedIn, async (req, res) => {
   const allProfUser = await User.find({ profession: req.params.name });
   res.send({
@@ -67,7 +69,32 @@ app.get("/api/profession/:name", isLoggedIn, async (req, res) => {
   });
 });
 
-app.get("/api/allUsers", isLoggedIn, async (req, res) => {
+app.get("/LOL", async (req, res) => {
+  const newInfo = new User({
+    email: "LOL3",
+    name: "mahir",
+    photo: "LOL",
+    accountType: 1,
+    profession: "asdfg",
+  });
+  newInfo.save();
+  console.log("DONE!!");
+  res.send(newInfo);
+});
+
+app.post("/api/searchUser/:profession", async (req, res) => {
+  const search = req.body.searchString;
+  const users = await User.find({
+    profession: req.params.profession,
+    name: new RegExp("^" + search),
+  });
+  res.send({
+    message: "Here are all the Professionals!!",
+    data: users,
+  });
+});
+
+app.get("/api/allUsers", async (req, res) => {
   const data = await User.find({});
   res.send(data);
 });
