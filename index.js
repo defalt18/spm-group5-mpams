@@ -46,42 +46,39 @@ app.use(
   })
 );
 
-//passport oauth
-const passport = require("passport");
-app.use(passport.initialize());
-app.use(passport.session());
-const googleStrategy = require("passport-google-oauth20").Strategy;
-const googleClientID = process.env.GOOGLE_CLIENT_ID;
-const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
-
-passport.serializeUser(function (user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function (user, done) {
-  done(null, user);
-});
-
-passport.use(
-  new googleStrategy(
-    {
-      clientID: googleClientID,
-      clientSecret: googleClientSecret,
-      callbackURL: "/api/auth/google/callback",
-      passReqToCallback: true,
-    },
-    (request, accessToken, refreshToken, profile, done) => {
-      return done(null, profile);
-    }
-  )
-);
-
 const { isLoggedIn } = require("./middleware/isLoggedIn");
+
+app.use((req, res, next) => {
+  req.user = req.body.user;
+});
 
 const authRoutes = require("./router/authRoutes");
 app.use("/api/auth", authRoutes);
 
+const workspaceRoutes = require("./router/workspaceRouter");
+app.use("/api/workspace", workspaceRoutes);
+
+const appointmentRoutes = require("./router/appointmentRouter");
+app.use("/api/appointment", appointmentRoutes);
+
 const User = require("./models/user");
+
+app.get("/api/profession", isLoggedIn, async (req, res) => {
+  const allProfessions = await User.distinct("profession");
+  res.send({
+    message: "Here are all the Professions!!",
+    data: allProfessions,
+  });
+});
+
+app.get("api/profession/:name", isLoggedIn, async (req, res) => {
+  const allProfUser = await User.find({ profession: req.params.name });
+  res.send({
+    message: "Here are all the Professionals!!",
+    data: allProfUser,
+  });
+});
+
 app.get("/api/allUsers", isLoggedIn, async (req, res) => {
   const data = await User.find({});
   res.send(data);

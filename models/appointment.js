@@ -14,9 +14,16 @@ const appointmentSchema = new Schema({
     ref: "Workspace",
     required: true,
   },
-  confirmed: {
-    type: Boolean,
-    required: True,
+  status: {
+    confirmation: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    message: {
+      type: String,
+      default: "Pending",
+    },
   },
   description: {
     type: String,
@@ -27,7 +34,7 @@ const appointmentSchema = new Schema({
   },
   priority: {
     type: String,
-    enum: [notUrgent, medium, urgent],
+    enum: ["notUrgent", "medium", "urgent"],
     required: true,
   },
 });

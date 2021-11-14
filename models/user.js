@@ -22,11 +22,9 @@ const userSchema = new Schema({
     required: true,
     default: -1,
   },
-  profession: [
-    {
-      type: String,
-    },
-  ],
+  profession: {
+    type: String,
+  },
   workspaceInfo: [
     {
       type: mongoose.Schema.Types.ObjectId,

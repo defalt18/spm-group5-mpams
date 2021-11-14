@@ -43,9 +43,4 @@ const registerHandler = async (req, res) => {
   });
 };
 
-const logoutHandler = (req, res) => {
-  req.logout();
-  res.send({ message: "Logged Out Successfully", redirectTo: "/" });
-};
-
-module.exports = { googleCallbackHandler, registerHandler, logoutHandler };
+module.exports = { googleCallbackHandler, registerHandler };
