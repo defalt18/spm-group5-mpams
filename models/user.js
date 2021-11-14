@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const Workspace = require("./workspace");
+const Appointment = require("./appointment");
 
 const userSchema = new Schema({
   email: {
@@ -20,24 +22,23 @@ const userSchema = new Schema({
     required: true,
     default: -1,
   },
-  professionalInfo: {
-    profession: [
-      {
-        type: String,
-      },
-    ],
-    address: {
+  profession: [
+    {
       type: String,
     },
-    mobileNo: {
-      type: String,
+  ],
+  workspaceInfo: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Workspace",
     },
-    imagesUris: [
-      {
-        type: String,
-      },
-    ],
-  },
+  ],
+  appointments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Appointment",
+    },
+  ],
 });
 
 module.exports = mongoose.model("User", userSchema);
