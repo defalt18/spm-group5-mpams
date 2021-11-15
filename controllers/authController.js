@@ -31,7 +31,7 @@ const googleCallbackHandler = async (req, res) => {
 };
 
 const registerHandler = async (req, res) => {
-  const newData = JSON.parse(req.body);
+  const newData = req.body;
   const data = await User.findOneAndUpdate(
     { email: req.user.emails[0].value },
     newData

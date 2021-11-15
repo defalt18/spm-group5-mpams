@@ -19,7 +19,13 @@ const createNewWorkspace = async (req, res) => {
   newWorkspace.userInfo = req.user._id;
   console.log(newWorkspace);
 
-  await newWorkspace.save();
+  const wsp = await newWorkspace.save();
+
+  const usr = await User.findById(req.user._id);
+  usr.workspaceInfo.push(wsp._id);
+
+  usr.save();
+
   res.send({
     message: "Created New Workspace Succesfully",
     data: newWorkspace,

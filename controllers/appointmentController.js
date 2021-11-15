@@ -14,6 +14,22 @@ const createAppointment = async (req, res) => {
     timestamp: req.body.timestamp,
     priority: req.body.priority,
   });
+
+  const appt = await newAppointment.save();
+
+  const ws = await Workspace.findById(req.params.id);
+  const usr = await User.find(req.user._id);
+
+  ws.appointments.push(appt._id);
+  usr.appointments.push(appt._id);
+
+  await ws.save();
+  await usr.save();
+
+  res.send({
+    message: "Created an Appointment",
+    data: appt,
+  });
 };
 
 const fetchAppointmentsOfAUser = async (req, res) => {
@@ -53,7 +69,12 @@ const deleteAppointment = async (req, res) => {
   const index = ws.appointments.indexOf(req.params.id);
   ws.appointments.slice(index, 1);
 
+  const usr = await Workspace.findById(appoint.requestedBy);
+  const index1 = usr.appointments.indexOf(req.params.id);
+  ws.appointments.slice(index1, 1);
+
   await ws.save();
+  await usr.save();
   await Appointment.findByIdAndDelete(req.params.id);
   res.send({
     message: "Deletion Successfull",

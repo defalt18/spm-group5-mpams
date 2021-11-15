@@ -84,13 +84,44 @@ app.get("/LOL", async (req, res) => {
 
 app.post("/api/searchUser/:profession", async (req, res) => {
   const search = req.body.searchString;
-  const users = await User.find({
-    profession: req.params.profession,
-    name: new RegExp("^" + search),
-  });
+  if (req.params.profession === "all") {
+    const users = await User.find({
+      name: new RegExp("^" + search),
+    });
+    res.send({
+      message: "Here are all the Professionals!!",
+      data: users,
+    });
+  } else {
+    const users = await User.find({
+      profession: req.params.profession,
+      name: new RegExp("^" + search),
+    });
+    res.send({
+      message: "Here are all the Professionals!!",
+      data: users,
+    });
+  }
+});
+
+app.get("/api/contacts", isLoggedIn, async (req, res) => {
+  const user = await User.findById(req.user._id);
+  const allAppointments = user.appointments;
+
+  const newSet = new Set();
+  for (let apt of allAppointments) {
+    const ws = await Workspace.findById(apt.requestedTo);
+    newSet.add(ws.userInfo);
+  }
+
+  let ctcs = [];
+  for (let prof of newSet) {
+    ctcs.push(await User.findById(prof));
+  }
+
   res.send({
-    message: "Here are all the Professionals!!",
-    data: users,
+    messages: "Successful Fetch of Contacts!",
+    data: ctcs,
   });
 });
 
