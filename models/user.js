@@ -13,6 +13,9 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  mobileNo: {
+    type: String,
+  },
   description: {
     type: String,
   },
