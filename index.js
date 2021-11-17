@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 // env variables
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 const DB_URI = process.env.DB_URI;
 const SECRET = process.env.SECRET;
 

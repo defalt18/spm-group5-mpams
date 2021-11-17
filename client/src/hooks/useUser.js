@@ -6,7 +6,12 @@ export default function useDefaultUser() {
     JSON.parse(localStorage.getItem("user-token"))
   );
 
-  return { user, setUser };
+  const updateUser = (newUser) => {
+    setUser(newUser);
+    localStorage.setItem("user-token", JSON.stringify(newUser));
+  };
+
+  return { user, setUser: updateUser };
 }
 
 export const useUserContext = () => {

@@ -2,15 +2,33 @@ import React, { useCallback } from "react";
 import googleLogo from "assets/images/google_logo.png";
 import loginLogo from "assets/images/login_picture.jpg";
 import { useHistory } from "react-router-dom";
-import { FIRST_LOGIN } from "routes";
+import { DASHBOARD, FIRST_LOGIN } from "routes";
 import Page from "components/Page";
+import { useGoogleLogin } from "react-use-googlelogin";
+import { useUserContext } from "../../hooks/useUser";
+import { getUser } from "utils";
 
 function Auth() {
   const history = useHistory();
+  const { setUser } = useUserContext();
+  const { signIn, signOut } = useGoogleLogin({
+    clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+    cookiePolicy: "single_host_origin",
+  });
 
   const onClick = useCallback(async () => {
-    history.push(FIRST_LOGIN);
-  }, [history]);
+    const user = (await signIn())?.profileObj;
+    const result = await getUser(user);
+    setUser({
+      ...result,
+      signOut,
+      name: user.name,
+      photo: user.imageUrl,
+      description: "",
+    });
+    if (result.accountType === -1) history.push(FIRST_LOGIN);
+    else history.push(DASHBOARD);
+  }, [history, signIn, setUser, signOut]);
 
   return (
     <Page className="bg-gray-900 text-white grid place-items-center">

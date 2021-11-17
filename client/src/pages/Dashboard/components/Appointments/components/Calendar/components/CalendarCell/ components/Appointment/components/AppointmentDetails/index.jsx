@@ -17,13 +17,15 @@ const colorScheme = {
 
 function AppointmentDetails(props) {
   const {
-    toggle,
     description = "This is a mock appointment",
     priority = "medium",
     timestamp = Date.now(),
     time = Date.now(),
-    requestFrom = "Dr Raghvendra Chaudhury",
-  } = props;
+  } = props._doc;
+  const { toggle } = props;
+  const { user, profUser } = props;
+  const requestFrom = user.name;
+  const requestTo = profUser.name;
   return (
     <div className="min-w-120">
       <div
@@ -43,11 +45,11 @@ function AppointmentDetails(props) {
         <p className="text-base text-gray-600 my-4">{description}</p>
         <p className="text-base text-gray-600">
           <span>Created on : </span>
-          <span>{format(timestamp, "dd MMMM yyyy, h:mm aa")}</span>
+          <span>{format(time, "dd MMMM yyyy, h:mm aa")}</span>
         </p>
         <p className="text-base text-gray-600">
           <span>Time : </span>
-          <span>{format(time, "dd MMMM yyyy, h:mm aa")}</span>
+          <span>{format(new Date(timestamp), "dd MMMM yyyy, h:mm aa")}</span>
         </p>
         <p className="text-base text-gray-600">
           <span>Created by : </span>

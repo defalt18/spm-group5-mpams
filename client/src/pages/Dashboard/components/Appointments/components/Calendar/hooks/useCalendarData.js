@@ -1,7 +1,9 @@
 import { useCallback, useMemo, useState } from "react";
 import { addMonths, getDay, getDaysInMonth, getMonth, getYear } from "date-fns";
+import { useAsync } from "react-use";
+import { fetchAppointmentsForMonth } from "../../../../../../../utils";
 
-export function useCalendarData() {
+export function useCalendarData(user) {
   const [date, setDate] = useState(Date.now());
 
   const startDay = useMemo(
@@ -9,6 +11,9 @@ export function useCalendarData() {
     [date]
   );
 
+  const { loading, value: appointmentData } = useAsync(() =>
+    fetchAppointmentsForMonth(user, date)
+  );
   const totalDays = useMemo(() => getDaysInMonth(date), [date]);
 
   const totalDaysPrevMonth = useMemo(
@@ -53,6 +58,8 @@ export function useCalendarData() {
 
   return {
     date,
+    loading,
+    appointmentData,
     getCalendarDate,
     nextMonthToggle,
     prevMonthToggle,

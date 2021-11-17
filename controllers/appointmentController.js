@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Appointment = require("../models/appointment");
 const Workspace = require("../models/workspace");
+const _isEmpty = require("lodash/isEmpty");
 
 const createAppointment = async (req, res) => {
   const newAppointment = new Appointment({

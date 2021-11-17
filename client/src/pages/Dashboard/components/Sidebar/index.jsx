@@ -14,6 +14,7 @@ import { AUTH } from "routes";
 const avatarStyle = {
   bgcolor: "#2d3440",
 };
+
 const loaderStyles = { color: "white", height: 20, width: 20 };
 
 const SidebarItem = React.memo((props) => {
@@ -39,26 +40,33 @@ function Sidebar(props) {
 
   const onLogout = useCallback(async () => {
     toggleLoading();
+    await user.signOut();
     await logoutUser(setUser);
     toggleLoading();
     history.push(AUTH);
-  }, [toggleLoading, history, setUser]);
+  }, [toggleLoading, history, setUser, user]);
 
   return (
     <div className="w-3/12 bg-gray-800 text-white shadow-2xl py-8 px-8 font-bold text-2xl flex flex-col">
       <div className="p-2 flex gap-2 items-center flex-wrap flex-col">
-        <Avatar className="text-white" sx={avatarStyle}>
-          {user.name[0]}
-        </Avatar>
+        <Avatar className="text-white" src={user.photo} sx={avatarStyle} />
         <div className="flex flex-col font-normal text-center">
           <span className="text-base text-white truncate">{user.name}</span>
           <span className="text-base text-gray-400 truncate">{user.email}</span>
         </div>
       </div>
       <div className="flex w-full flex-col gap-y-3 mt-8">
-        {_map(_keys(VIEWS), (key) => (
-          <SidebarItem id={key.toUpperCase()} label={key} {...rest} />
-        ))}
+        {_map(
+          user?.accountType === 0 ? _keys(VIEWS) : _keys(VIEWS).slice(0, 2),
+          (key) => (
+            <SidebarItem
+              key={key}
+              id={key.toUpperCase()}
+              label={key}
+              {...rest}
+            />
+          )
+        )}
       </div>
       <button
         className="w-full mt-auto flex gap-x-2 items-center group text-gray-500 text-left text-lg hover:bg-white hover:bg-opacity-10 hover:text-white p-2 transition-all duration-200 rounded"

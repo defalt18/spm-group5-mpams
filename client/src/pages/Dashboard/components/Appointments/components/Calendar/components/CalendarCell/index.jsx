@@ -2,17 +2,33 @@ import React from "react";
 import c from "classnames";
 import Popover from "@mui/material/Popover";
 import _noop from "lodash/noop";
+import _map from "lodash/map";
+import _filter from "lodash/filter";
 import InsertInvitationTwoToneIcon from "@mui/icons-material/InsertInvitationTwoTone";
-import { format, getDate, getDay, getMonth, isToday } from "date-fns";
+import {
+  format,
+  getDate,
+  getDay,
+  getMonth,
+  isSameDay,
+  isToday,
+} from "date-fns";
 import Appointment from "./ components/Appointment";
+import _isEmpty from "lodash/isEmpty";
 
 const anchorOrigin = {
   vertical: "top",
   horizontal: "right",
 };
 
+const priority = {
+  urgent: "bg-red-500",
+  notUrgent: "bg-green-400",
+  medium: "bg-yellow-300",
+};
+
 export const CalendarCell = React.memo((props) => {
-  const { isLast, date, actualDate } = props;
+  const { isLast, date, actualDate, data, user } = props;
   const label = getDate(date);
   const disabled =
     getDay(date) === 0 || getMonth(date) !== getMonth(actualDate);
@@ -29,6 +45,9 @@ export const CalendarCell = React.memo((props) => {
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+
+  const getFilteredData = (data) =>
+    _filter(data, ({ _doc: app }) => isSameDay(date, new Date(app.timestamp)));
 
   return (
     <>
@@ -54,13 +73,14 @@ export const CalendarCell = React.memo((props) => {
             </span>
           )}
         </div>
-        {label === 12 && (
-          <div className="w-full flex flex-wrap gap-1 items-center">
-            <div className="h-2 w-2 rounded-2xl bg-green-400" />
-            <div className="h-2 w-2 rounded-2xl bg-yellow-300" />
-            <div className="h-2 w-2 rounded-2xl bg-red-500" />
-          </div>
-        )}
+
+        <div className="w-full flex flex-wrap gap-1 items-center">
+          {_map(getFilteredData(data), ({ _doc: item }) => (
+            <div
+              className={c("h-2 w-2 rounded-2xl", priority[item.priority])}
+            />
+          ))}
+        </div>
       </div>
       <Popover
         anchorEl={anchorEl}
@@ -76,11 +96,17 @@ export const CalendarCell = React.memo((props) => {
           </div>
           <div className="flex flex-col gap-y-2">
             <span className="text-sm text-gray-600">
-              {format(date, "dd MMMM yyyy")}
+              {format(date, "d MMMM yyyy")}
             </span>
-            <Appointment priority="notUrgent" />
-            <Appointment priority="medium" />
-            <Appointment priority="urgent" />
+            {_isEmpty(getFilteredData(data)) ? (
+              <p className="text-base text-gray-700 font-bold">
+                No appointments on this day
+              </p>
+            ) : (
+              _map(getFilteredData(data), (item) => (
+                <Appointment {...item} loggedInUser={user} />
+              ))
+            )}
           </div>
         </div>
       </Popover>
