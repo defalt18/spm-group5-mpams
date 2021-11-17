@@ -2,8 +2,8 @@ import axios from "axios";
 import _reduce from "lodash/reduce";
 import _isEmpty from "lodash/isEmpty";
 
-// const BASE_URL = "https://spm-group5-mpams.herokuapp.com/";
-const BASE_URL = "http://localhost:8000/";
+const BASE_URL = "https://spm-group5-mpams.herokuapp.com/";
+// const BASE_URL = "http://localhost:8000/";
 
 export const setUser = async (registerUser, User) => {
   registerUser(User);
