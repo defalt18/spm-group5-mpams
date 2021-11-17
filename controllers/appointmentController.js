@@ -2,9 +2,11 @@ const User = require("../models/user");
 const Appointment = require("../models/appointment");
 const Workspace = require("../models/workspace");
 const _isEmpty = require("lodash/isEmpty");
+const {request} = require("express");
 
 const createAppointment = async (req, res) => {
     console.log(req.user);
+    // return res.send("LOLOL")
     const newAppointment = new Appointment({
         status: {
             confirmation: false,
@@ -30,7 +32,7 @@ const createAppointment = async (req, res) => {
 
     await ws.save();
     await usr.save();
-
+    console.log(appt);
     res.send({
         message: "Created an Appointment",
         data: appt,
@@ -38,20 +40,20 @@ const createAppointment = async (req, res) => {
 };
 
 const fetchAppointmentsOfAUser = async (req, res) => {
-    const userAppointments = await Appointment.findAll({
+    const userAppointments = await Appointment.find({
         requestedBy: req.params.id,
     });
-    req.send({
+    res.send({
         message: "All the appointments are send",
         data: userAppointments,
     });
 };
 
 const fetchAppointmentsOfAWorkspace = async (req, res) => {
-    const workspaceAppointments = await Appointment.findAll({
+    const workspaceAppointments = await Appointment.find({
         requestedTo: req.params.id,
     });
-    req.send({
+    res.send({
         message: "All the appointments are send",
         data: workspaceAppointments,
     });
