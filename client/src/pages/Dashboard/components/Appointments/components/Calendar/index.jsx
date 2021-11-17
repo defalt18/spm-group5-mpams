@@ -10,7 +10,7 @@ function Calendar(props) {
   const { user } = useUserContext();
   const { getCalendarDate, loading, ...rest } = useCalendarData(user);
 
-  console.log("Hey", rest.appointmentData);
+  console.log(rest.appointmentData);
   return (
     <div className="w-full">
       <CalendarHeader {...rest} />

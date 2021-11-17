@@ -17,15 +17,17 @@ const colorScheme = {
 
 function AppointmentDetails(props) {
   const {
+    requestedTo,
+    requestedBy,
     description = "This is a mock appointment",
     priority = "medium",
     timestamp = Date.now(),
     time = Date.now(),
-  } = props._doc;
+  } = props;
   const { toggle } = props;
-  const { user, profUser } = props;
-  const requestFrom = user.name;
-  const requestTo = profUser.name;
+  // const { user, profUser } = props;
+  const requestFrom = requestedBy.name;
+  const requestTo = requestedTo.userInfo.name;
   return (
     <div className="min-w-120">
       <div

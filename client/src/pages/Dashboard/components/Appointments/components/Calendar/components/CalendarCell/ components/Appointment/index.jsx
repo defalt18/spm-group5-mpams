@@ -14,13 +14,17 @@ const colorClass = {
 function Appointment(props) {
   const [open, toggle] = useToggle(false);
   const {
+    requestedTo,
+    requestedBy,
     priority = "notUrgent",
     confirmed = true,
     timestamp = Date.now(),
-  } = props._doc;
-  const { name } = props?.user;
-  const { loggedInUser } = props;
-  const { name: proName } = props?.profUser;
+  } = props;
+  const { name } = requestedBy;
+  const {
+    loggedInUser: { accountType },
+  } = props;
+  const { name: proName } = requestedTo.userInfo;
 
   if (!confirmed) return null;
 
@@ -36,7 +40,7 @@ function Appointment(props) {
             colorClass[priority]
           )}
         >
-          {loggedInUser.accountType === 0 ? name : proName}
+          {accountType ? name : proName}
         </span>
       </button>
       <Dialog open={open} onClose={toggle}>

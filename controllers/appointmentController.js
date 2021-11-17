@@ -88,20 +88,34 @@ const deleteAppointment = async (req, res) => {
 };
 
 const monthAppointmentsForUser = async (req, res) => {
-    const allAppointments = await Appointment.find({
-        email: req.user.email,
-    }).sort({timestamp: "asc"});
+    const {accountType, appointments} = req.user
 
-    const compiledAppointments = await allAppointments.reduce( async (allData, app, index) => {
-        const user = await User.findById(app.requestedBy)
-        const workspace = await Workspace.findById(app.requestedTo)
-        const profUser = await User.findById(workspace.userInfo)
-        return [...(await allData), {...app, workspace, user, profUser}]
-    }, [])
+    let allAppointments;
+
+    if (accountType) {
+        allAppointments = await Appointment.find({requestedTo: {$in: req.user.workspaceInfo}}).populate({path: "requestedBy"}).populate({
+            path: "requestedTo", populate: {
+                path: "userInfo"
+            }
+        });
+    } else {
+        allAppointments = await Appointment.find({requestedBy: req.user._id}).populate({path: "requestedBy"}).populate({
+            path: "requestedTo", populate: {
+                path: "userInfo"
+            }
+        });
+    }
+    console.log(allAppointments);
+    // const compiledAppointments = await allAppointments.reduce( async (allData, app, index) => {
+    //     const user = await User.findById(app.requestedBy)
+    //     const workspace = await Workspace.findById(app.requestedTo)
+    //     const profUser = await User.findById(workspace.userInfo)
+    //     return [...(await allData), {...app, workspace, user, profUser}]
+    // }, [])
 
     res.send({
         message: "Fetch Successful",
-        data: compiledAppointments,
+        data: allAppointments,
     });
 };
 

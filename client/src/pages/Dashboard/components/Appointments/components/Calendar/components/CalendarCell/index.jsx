@@ -47,7 +47,7 @@ export const CalendarCell = React.memo((props) => {
   const id = open ? "simple-popover" : undefined;
 
   const getFilteredData = (data) =>
-    _filter(data, ({ _doc: app }) => isSameDay(date, new Date(app.timestamp)));
+    _filter(data, ({ timestamp }) => isSameDay(date, new Date(timestamp)));
 
   return (
     <>
@@ -75,10 +75,8 @@ export const CalendarCell = React.memo((props) => {
         </div>
 
         <div className="w-full flex flex-wrap gap-1 items-center">
-          {_map(getFilteredData(data), ({ _doc: item }) => (
-            <div
-              className={c("h-2 w-2 rounded-2xl", priority[item.priority])}
-            />
+          {_map(getFilteredData(data), ({ priority: p }) => (
+            <div className={c("h-2 w-2 rounded-2xl", priority[p])} />
           ))}
         </div>
       </div>
