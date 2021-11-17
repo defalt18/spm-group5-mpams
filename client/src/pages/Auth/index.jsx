@@ -5,8 +5,10 @@ import { useHistory } from "react-router-dom";
 import { DASHBOARD, FIRST_LOGIN } from "routes";
 import Page from "components/Page";
 import { useGoogleLogin } from "react-use-googlelogin";
-import { useUserContext } from "../../hooks/useUser";
+import { useUserContext } from "hooks/useUser";
 import { getUser } from "utils";
+import { useToggle } from "react-use";
+import Loader from "components/Loader";
 
 function Auth() {
   const history = useHistory();
@@ -15,10 +17,12 @@ function Auth() {
     clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
     cookiePolicy: "single_host_origin",
   });
+  const [loading, toggleLoading] = useToggle(false);
 
   const onClick = useCallback(async () => {
+    toggleLoading();
     const user = (await signIn())?.profileObj;
-    const result = await getUser(user);
+    const result = await getUser(user).catch((err) => alert(err.message));
     setUser({
       ...result,
       signOut,
@@ -28,7 +32,15 @@ function Auth() {
     });
     if (result.accountType === -1) history.push(FIRST_LOGIN);
     else history.push(DASHBOARD);
-  }, [history, signIn, setUser, signOut]);
+  }, [history, signIn, setUser, signOut, toggleLoading]);
+
+  if (loading)
+    return (
+      <Loader
+        className="h-screen w-screen grid place-items-center bg-gray-600"
+        type="bird"
+      />
+    );
 
   return (
     <Page className="bg-gray-900 text-white grid place-items-center">
