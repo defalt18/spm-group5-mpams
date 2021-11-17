@@ -16,20 +16,21 @@ const {
   monthAppointmentsForUser,
   monthAppointmentsForWorkspace,
 } = require("../controllers/appointmentController");
+
 const { isLoggedIn } = require("../middleware/isLoggedIn");
+
+router.post('/monthly', isLoggedIn, monthAppointmentsForUser);
+
+router.post("/monthly/:id", isLoggedIn, monthAppointmentsForWorkspace);
 
 router.post("/:id", isLoggedIn, createAppointment);
 
-router.get("/", isLoggedIn, fetchAppointmentsOfAUser);
+router.post("/", isLoggedIn, fetchAppointmentsOfAUser);
 
-router.get("/:id", isLoggedIn, fetchAppointmentsOfAWorkspace);
+router.post("/:id", isLoggedIn, fetchAppointmentsOfAWorkspace);
 
 router.put("/:id", isLoggedIn, updateAppointment);
 
 router.delete("/:id", isLoggedIn, deleteAppointment);
-
-router.get("/monthly", isLoggedIn, monthAppointmentsForUser);
-
-router.get("/monthly/:id", isLoggedIn, monthAppointmentsForWorkspace);
 
 module.exports = router;

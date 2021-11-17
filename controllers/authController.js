@@ -1,13 +1,13 @@
 const User = require("../models/user");
 
 const googleCallbackHandler = async (req, res) => {
-  const info = await User.findOne({ email: req.user.emails[0].value });
+  const info = await User.findOne({ email: req.user.email });
   if (!info) {
     const newUser = new User({
-      email: req.user.emails[0].value,
-      name: req.user.displayName,
+      email: req.user.email,
+      name: req.user.name,
       accountType: -1,
-      photo: req.user.photos[0].value,
+      photo: req.user.photo,
     });
     await newUser.save();
     res.send({
@@ -33,7 +33,7 @@ const googleCallbackHandler = async (req, res) => {
 const registerHandler = async (req, res) => {
   const newData = req.body.user;
   const data = await User.findOneAndUpdate(
-    { email: req.user.emails[0].value },
+    { email: req.user.email },
     newData
   );
   res.send({

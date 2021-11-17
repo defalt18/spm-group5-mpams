@@ -3,18 +3,17 @@ const Appointment = require("../models/appointment");
 const Workspace = require("../models/workspace");
 
 const createNewWorkspace = async (req, res) => {
-  const { workspaceName, address, mobileNo, timings } = req.body;
+  const { workspaceName, address, mobileNo } = req.body.data;
   const newWorkspace = new Workspace({
     workspaceName,
     address,
     mobileNo,
-    timings,
   });
 
-  newWorkspace.images = req.files.map((f) => ({
-    url: f.path,
-    filename: f.filename,
-  }));
+  // newWorkspace.images = req.files.map((f) => ({
+  //   url: f.path,
+  //   filename: f.filename,
+  // }));
 
   newWorkspace.userInfo = req.user._id;
   console.log(newWorkspace);

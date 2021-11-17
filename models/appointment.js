@@ -7,17 +7,14 @@ const appointmentSchema = new Schema({
   requestedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true,
   },
   requestedTo: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Workspace",
-    required: true,
+    ref: "Workspace"
   },
   status: {
     confirmation: {
       type: Boolean,
-      required: true,
       default: false,
     },
     message: {
@@ -30,12 +27,10 @@ const appointmentSchema = new Schema({
   },
   timestamp: {
     type: Date,
-    required: true,
   },
   priority: {
     type: String,
     enum: ["notUrgent", "medium", "urgent"],
-    required: true,
   },
 });
 

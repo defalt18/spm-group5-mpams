@@ -13,6 +13,6 @@ const { isLoggedIn } = require("../middleware/isLoggedIn");
 
 router.post("/google/callback", googleCallbackHandler);
 
-router.post("/register", isLoggedIn, registerHandler);
+router.post("/register", registerHandler);
 
 module.exports = router;

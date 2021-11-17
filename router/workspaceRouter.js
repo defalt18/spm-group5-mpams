@@ -19,7 +19,7 @@ const { isLoggedIn } = require("../middleware/isLoggedIn");
 const workspace = require("../models/workspace");
 
 //createWorkspace
-router.post("/", isLoggedIn, upload.array("images"), createNewWorkspace);
+router.post("/", isLoggedIn, createNewWorkspace);
 
 router.get("/:id", isLoggedIn, workspaceDetails);
 
