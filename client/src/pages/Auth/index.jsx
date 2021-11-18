@@ -4,8 +4,7 @@ import loginLogo from "assets/images/login_picture.jpg";
 import { useHistory } from "react-router-dom";
 import { DASHBOARD, FIRST_LOGIN } from "routes";
 import Page from "components/Page";
-import { useGoogleLogin } from "react-use-googlelogin";
-import { useUserContext } from "hooks/useUser";
+import { useLogin, useUserContext } from "hooks/useUser";
 import { getUser } from "utils";
 import { useToggle } from "react-use";
 import Loader from "components/Loader";
@@ -13,10 +12,7 @@ import Loader from "components/Loader";
 function Auth() {
   const history = useHistory();
   const { setUser } = useUserContext();
-  const { signIn, signOut } = useGoogleLogin({
-    clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-    cookiePolicy: "single_host_origin",
-  });
+  const { signIn, signOut } = useLogin();
   const [loading, toggleLoading] = useToggle(false);
 
   const onClick = useCallback(async () => {

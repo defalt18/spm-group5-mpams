@@ -41,7 +41,7 @@ export const addWorkspaces = async (workspaces, user) => {
         user,
         data,
       });
-      return [...(await allWorkspaces), result.data.data];
+      return [...(await allWorkspaces), result.data.data._id];
     },
     []
   );

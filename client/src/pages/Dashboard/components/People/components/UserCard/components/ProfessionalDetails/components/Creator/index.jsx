@@ -96,7 +96,7 @@ function Creator(props) {
               src={workspace?.imagesUris[0] || workspace_image}
             />
             <p className="font-bold">{workspace.workspaceName}</p>
-            <p className="text-gray-500">{workspace.address}</p>
+            <p className="text-gray-500 truncate">{workspace.address}</p>
           </button>
         ))}
       </div>

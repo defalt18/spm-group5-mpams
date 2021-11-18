@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 
 function Professional(props) {
   const { context } = props;
-  const { user } = context;
+  const { user, setUser: setContext } = context;
   const history = useHistory();
   const [userDetails, setDetails] = useState({
     ...user,
@@ -28,9 +28,14 @@ function Professional(props) {
   const onClick = useCallback(async () => {
     const { signOut, address, ...userdata } = userDetails;
     const mongoUser = await registerUser(userdata);
-    await addWorkspaces(workspaces, mongoUser.data);
+    const wsIDs = await addWorkspaces(workspaces, mongoUser.data);
+    setContext({
+      ...userDetails,
+      ...mongoUser,
+      workspaceInfo: wsIDs,
+    });
     history.push(DASHBOARD);
-  }, [userDetails, workspaces, history]);
+  }, [userDetails, workspaces, history, setContext]);
 
   return (
     <>

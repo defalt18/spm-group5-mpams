@@ -10,6 +10,7 @@ import { CircularProgress } from "@mui/material";
 import { logoutUser } from "utils";
 import { useHistory } from "react-router-dom";
 import { AUTH } from "routes";
+import { useLogin } from "hooks/useUser";
 
 const avatarStyle = {
   bgcolor: "#2d3440",
@@ -37,14 +38,15 @@ function Sidebar(props) {
   const { user, setUser, ...rest } = props;
   const history = useHistory();
   const [loading, toggleLoading] = useToggle(false);
+  const { signOut } = useLogin();
 
   const onLogout = useCallback(async () => {
     toggleLoading();
-    await user.signOut();
+    await signOut().catch((err) => console.log(err.message));
     await logoutUser(setUser);
     toggleLoading();
     history.push(AUTH);
-  }, [toggleLoading, history, setUser, user]);
+  }, [toggleLoading, history, setUser, signOut]);
 
   return (
     <div className="w-3/12 bg-gray-800 text-white shadow-2xl py-8 px-8 font-bold text-2xl flex flex-col">
