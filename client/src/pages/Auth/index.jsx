@@ -12,7 +12,7 @@ import Loader from "components/Loader";
 function Auth() {
   const history = useHistory();
   const { setUser } = useUserContext();
-  const { signIn, signOut } = useLogin();
+  const { signIn } = useLogin();
   const [loading, toggleLoading] = useToggle(false);
 
   const onClick = useCallback(async () => {
@@ -21,14 +21,13 @@ function Auth() {
     const result = await getUser(user).catch((err) => alert(err.message));
     setUser({
       ...result,
-      signOut,
       name: user.name,
       photo: user.imageUrl,
       description: "",
     });
     if (result.accountType === -1) history.push(FIRST_LOGIN);
     else history.push(DASHBOARD);
-  }, [history, signIn, setUser, signOut, toggleLoading]);
+  }, [history, signIn, setUser, toggleLoading]);
 
   if (loading)
     return (

@@ -26,7 +26,7 @@ function Professional(props) {
   );
 
   const onClick = useCallback(async () => {
-    const { signOut, address, ...userdata } = userDetails;
+    const { address, ...userdata } = userDetails;
     const mongoUser = await registerUser(userdata);
     const wsIDs = await addWorkspaces(workspaces, mongoUser.data);
     setContext({

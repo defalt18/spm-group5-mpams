@@ -18,7 +18,7 @@ function UserForm(props) {
   );
 
   const onClick = useCallback(async () => {
-    const { signOut, address, ...userdata } = userDetails;
+    const { address, ...userdata } = userDetails;
     const result = await registerUser(userdata);
     setUser({ ...userDetails, ...result });
     history.push(DASHBOARD);
