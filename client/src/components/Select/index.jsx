@@ -8,6 +8,7 @@ function Select(props) {
     borderRadius = "1.5rem",
     className,
     handleChange,
+    name,
     backgroundColor = colors.gray["200"],
     showCaption = true,
     prefix = "Profession : ",
@@ -18,9 +19,9 @@ function Select(props) {
     (selectVal) => {
       setValue(selectVal);
       const { value } = selectVal;
-      handleChange(value);
+      handleChange({ target: { name, value } });
     },
-    [handleChange, setValue]
+    [handleChange, setValue, name]
   );
 
   const options = React.useMemo(

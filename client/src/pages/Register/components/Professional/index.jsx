@@ -4,10 +4,13 @@ import Select from "components/Select";
 import _map from "lodash/map";
 import WorkspaceCard from "../WorkspaceCard";
 import { addWorkspaces, registerUser } from "../../../../utils";
+import { DASHBOARD } from "../../../../routes";
+import { useHistory } from "react-router-dom";
 
 function Professional(props) {
   const { context } = props;
   const { user } = context;
+  const history = useHistory();
   const [userDetails, setDetails] = useState({
     ...user,
     accountType: 1,
@@ -25,11 +28,9 @@ function Professional(props) {
   const onClick = useCallback(async () => {
     const { signOut, address, ...userdata } = userDetails;
     const mongoUser = await registerUser(userdata);
-    const mongoWorkspaces = await addWorkspaces(workspaces, mongoUser.data);
-    console.log(mongoUser.data, mongoWorkspaces, userdata);
-  }, [userDetails, workspaces]);
-
-  console.log(workspaces);
+    await addWorkspaces(workspaces, mongoUser.data);
+    history.push(DASHBOARD);
+  }, [userDetails, workspaces, history]);
 
   return (
     <>

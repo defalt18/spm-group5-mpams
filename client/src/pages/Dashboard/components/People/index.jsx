@@ -12,23 +12,27 @@ import Loader from "components/Loader";
 function People(props) {
   const { user } = props;
   const [searchString, setSearchString] = useState("");
-  const [profession, filterProfession] = useState("");
+  const [filterParams, filterProfession] = useState({ profession: "" });
   const { loading, value: data } = useAsync(() =>
     fetchProfessionals(searchString)
   );
+
+  const handleFilterChange = ({ target: { value } }) => {
+    filterProfession({ profession: value });
+  };
 
   const getFilteredData = useCallback(
     (data) => {
       return _filter(
         data,
-        !_isEmpty(profession)
+        !_isEmpty(filterParams.profession)
           ? {
-              profession,
+              profession: filterParams.profession,
             }
           : null
       );
     },
-    [profession]
+    [filterParams.profession]
   );
 
   const renderContent = () => {
@@ -51,7 +55,7 @@ function People(props) {
     <div className="flex-1 bg-gray-100 p-8">
       <p className="font-bold text-2xl mb-4">Professionals</p>
       <div className="flex justify-between items-center w-full">
-        <Select className="w-72" handleChange={filterProfession} />
+        <Select className="w-72" handleChange={handleFilterChange} />
         <Search setSearchString={setSearchString} />
       </div>
       {renderContent()}
