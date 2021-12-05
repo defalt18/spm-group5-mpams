@@ -1,13 +1,14 @@
 import React, { useCallback } from "react";
 import googleLogo from "assets/images/google_logo.png";
-import loginLogo from "assets/images/login_picture.jpg";
 import { useHistory } from "react-router-dom";
 import { DASHBOARD, FIRST_LOGIN } from "routes";
 import Page from "components/Page";
 import { useLogin, useUserContext } from "hooks/useUser";
+import { CircularProgress } from "@mui/material";
 import { getUser } from "utils";
 import { useToggle } from "react-use";
 import Loader from "components/Loader";
+import Header from "./components/Header";
 
 function Auth() {
   const history = useHistory();
@@ -38,24 +39,40 @@ function Auth() {
     );
 
   return (
-    <Page className="bg-gray-900 text-white grid place-items-center">
-      <div className="w-5/12 flex flex-col items-center">
-        <p className="text-white text-2xl font-bold mb-4 text-center">
-          Login to Multi-Profession Appointment Management System
+    <Page className="bg-gray-300 text-white relative home-gradient flex">
+      <Header />
+      <div className="m-auto rounded-3xl p-8 bg-black bg-opacity-20 text-white flex flex-col items-center w-4/12">
+        <p className="font-bold text-2xl mb-4">Log in to your account</p>
+        <p className="mb-4 text-center">
+          This is an appointment scheduling portal for professionals and
+          everyday users.
+          <br />
+          <br />
+          Hop in and explore!
         </p>
-        <div className="bg-white flex flex-col w-full items-center rounded p-4 text-black">
-          <img alt="welcome" className="h-72 w-72 my-4" src={loginLogo} />
-          <p className="text-center mb-4 font-bold text-lg">
-            Get started with us by signing in
-          </p>
-          <button
-            className="transition-all duration-200 ease-in-out bg-blue-700 rounded p-3 flex items-center gap-x-3 hover:bg-opacity-80"
-            onClick={onClick}
-          >
-            <img alt="google" className="w-6 h-6" src={googleLogo} />
-            <p className="text-white font-bold">Sign in with Google</p>
-          </button>
-        </div>
+        <button
+          className="flex items-center w-72 rounded-xl p-2 px-3 bg-black bg-opacity-40 transition-all duration-200 ease-in-out hover:bg-opacity-60"
+          disabled={loading}
+          onClick={onClick}
+        >
+          {loading ? (
+            <CircularProgress
+              className="mx-auto"
+              style={{
+                height: 25,
+                width: 25,
+                color: "white",
+              }}
+            />
+          ) : (
+            <>
+              <img className="h-5 w-5" src={googleLogo} />
+              <div className="flex-1 flex">
+                <p className="m-auto text-white">Log in with Google</p>
+              </div>
+            </>
+          )}
+        </button>
       </div>
     </Page>
   );
