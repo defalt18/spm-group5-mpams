@@ -60,26 +60,30 @@ const fetchAppointmentsOfAWorkspace = async (req, res) => {
 };
 
 const updateAppointment = async (req, res) => {
+    console.log("request", req.body)
     const updatedAppointment = await Appointment.findByIdAndUpdate(
         req.params.id,
-        req.body.updationInfo
+        {timestamp: req.body.timestamp}
     );
     res.send({
         message: "Updated the Appointment",
-        data: updateAppointment,
+        data: updatedAppointment,
     });
 };
 
 const deleteAppointment = async (req, res) => {
     const appoint = await Appointment.findById(req.params.id);
-    console.log(appoint);
     const ws = await Workspace.findById(appoint.requestedTo);
     const index = ws.appointments.indexOf(req.params.id);
-    ws.appointments.slice(index, 1);
+    ws.appointments.splice(index, 1);
 
     const usr = await User.findById(appoint.requestedBy);
     const index1 = usr.appointments.indexOf(req.params.id);
-    ws.appointments.slice(index1, 1);
+    usr?.appointments.splice(index1, 1);
+
+    const pro = await User.findById(appoint.requestedTo);
+    const index2 = pro?.appointments.indexOf(req.params.id);
+    pro?.appointments.splice(index2, 1);
 
     await ws.save();
     await usr.save();

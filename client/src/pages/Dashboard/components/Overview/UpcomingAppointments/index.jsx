@@ -3,9 +3,12 @@ import c from "classnames";
 import Tooltip from "@mui/material/Tooltip";
 import { default as RescheduleIcon } from "@mui/icons-material/ReplayOutlined";
 import { default as CloseIcon } from "@mui/icons-material/CloseRounded";
-import { format } from "date-fns";
-import { default as DetailsIcon } from "@mui/icons-material/ReadMoreOutlined";
+import { format, isPast } from "date-fns";
 import { useUserContext } from "hooks/useUser";
+import { useAppointmentActions } from "hooks/useAppointmentActions";
+import { Dialog } from "@mui/material";
+import RescheduleAppointment from "modules/appointments";
+import { useToggle } from "react-use";
 
 const iconStyle = {
   height: 23,
@@ -26,6 +29,9 @@ const prioritySystem = {
 
 function UpcomingAppointment(props) {
   const { user } = useUserContext();
+  const [open, toggle] = useToggle(false);
+  const { deleteAppointment, updateAppointment, loading } =
+    useAppointmentActions(props);
   const { requestedTo, requestedBy, timestamp, priority } = props;
   const name = user.accountType
     ? requestedBy?.name
@@ -54,31 +60,40 @@ function UpcomingAppointment(props) {
         </p>
       </div>
       <div className="flex items-center gap-x-2">
-        <button>
-          <Tooltip title="Show details">
-            <DetailsIcon
-              className="bg-gray-100 rounded-2xl p-1"
-              style={iconStyle}
-            />
-          </Tooltip>
-        </button>
-        <button>
-          <Tooltip title="Reschedule appointment">
-            <RescheduleIcon
-              className="bg-gray-100 rounded-2xl p-1"
-              style={iconStyle}
-            />
-          </Tooltip>
-        </button>
-        <button>
-          <Tooltip title="Cancel appointment">
-            <CloseIcon
-              className="bg-gray-100 rounded-2xl p-1"
-              style={iconStyle}
-            />
-          </Tooltip>
-        </button>
+        {isPast(new Date(timestamp)) && (
+          <p className="text-gray-700 bg-gray-200 rounded py-0.5 px-2 uppercase text-xs">
+            Expired
+          </p>
+        )}
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+            <button onClick={toggle}>
+              <Tooltip title="Reschedule appointment">
+                <RescheduleIcon
+                  className="bg-gray-100 rounded-2xl p-1"
+                  style={iconStyle}
+                />
+              </Tooltip>
+            </button>
+            <button onClick={deleteAppointment}>
+              <Tooltip title="Cancel appointment">
+                <CloseIcon
+                  className="bg-gray-100 rounded-2xl p-1"
+                  style={iconStyle}
+                />
+              </Tooltip>
+            </button>
+          </>
+        )}
       </div>
+      <Dialog open={open} onClose={toggle}>
+        <RescheduleAppointment
+          {...props}
+          updateAppointment={updateAppointment}
+        />
+      </Dialog>
     </div>
   );
 }

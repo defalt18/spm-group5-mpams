@@ -125,8 +125,8 @@ app.post("/api/contacts", isLoggedIn, async (req, res) => {
     const newSet = new Set();
     for (let apt of allAppointments) {
         const apo = await Appointment.findById(apt)
-        const ws = await Workspace.findById(apo.requestedTo);
-        // console.log(ws)
+        const ws = await Workspace.findById(apo?.requestedTo);
+        if(ws)
         newSet.add(ws.userInfo);
     }
 

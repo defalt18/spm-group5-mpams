@@ -29,7 +29,7 @@ router.post("/", isLoggedIn, fetchAppointmentsOfAUser);
 
 router.post("/:id", isLoggedIn, fetchAppointmentsOfAWorkspace);
 
-router.put("/:id", isLoggedIn, updateAppointment);
+router.post("/update/:id", isLoggedIn, updateAppointment);
 
 router.delete("/:id", isLoggedIn, deleteAppointment);
 

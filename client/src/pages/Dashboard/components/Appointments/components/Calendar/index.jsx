@@ -10,7 +10,6 @@ function Calendar(props) {
   const { user } = useUserContext();
   const { getCalendarDate, loading, ...rest } = useCalendarData(user);
 
-  console.log(rest.appointmentData);
   return (
     <div className="w-full">
       <CalendarHeader {...rest} />
@@ -28,6 +27,7 @@ function Calendar(props) {
                 data={rest.appointmentData}
                 date={getCalendarDate(indexRow, index)}
                 isLast={index === 6}
+                toggleUpdate={rest.toggleUpdate}
                 user={user}
               />
             ))}

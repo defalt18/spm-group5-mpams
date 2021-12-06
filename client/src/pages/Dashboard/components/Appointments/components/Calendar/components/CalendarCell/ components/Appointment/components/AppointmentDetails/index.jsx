@@ -1,8 +1,11 @@
 import React from "react";
 import { format } from "date-fns";
 import c from "classnames";
-import { IconButton } from "@mui/material";
+import { Dialog, IconButton } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { useAppointmentActions } from "hooks/useAppointmentActions";
+import RescheduleAppointment from "modules/appointments";
+import { useToggle } from "react-use";
 
 const colorScheme = {
   urgent: "bg-red-100",
@@ -17,17 +20,17 @@ const colorScheme = {
 
 function AppointmentDetails(props) {
   const {
-    requestedTo,
     requestedBy,
     description = "This is a mock appointment",
     priority = "medium",
     timestamp = Date.now(),
     time = Date.now(),
   } = props;
-  const { toggle } = props;
-  // const { user, profUser } = props;
+  const { toggle, update, ...rest } = props;
+  const [openDialog, toggleDialog] = useToggle(false);
+  const { deleteAppointment, updateAppointment, loading } =
+    useAppointmentActions({ ...rest, update });
   const requestFrom = requestedBy.name;
-  const requestTo = requestedTo.userInfo.name;
   return (
     <div className="min-w-120">
       <div
@@ -58,14 +61,25 @@ function AppointmentDetails(props) {
           <span>{requestFrom}</span>
         </p>
         <div className="w-full flex items-center justify-end gap-x-3 mt-4">
-          <button className="p-1 px-2 bg-blue-100 text-blue-500 rounded font-bold">
+          <button
+            className="p-1 px-2 bg-blue-100 text-blue-500 rounded font-bold"
+            disabled={loading}
+            onClick={toggleDialog}
+          >
             Reschedule appointment
           </button>
-          <button className="p-1 px-2 bg-red-100 text-red-500 rounded font-bold">
+          <button
+            className="p-1 px-2 bg-red-100 text-red-500 rounded font-bold"
+            disabled={loading}
+            onClick={deleteAppointment}
+          >
             Cancel appointment
           </button>
         </div>
       </div>
+      <Dialog open={openDialog} onClose={toggleDialog}>
+        <RescheduleAppointment updateAppointment={updateAppointment} />
+      </Dialog>
     </div>
   );
 }

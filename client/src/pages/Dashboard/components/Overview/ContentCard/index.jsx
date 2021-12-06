@@ -4,7 +4,9 @@ import Tooltip from "@mui/material/Tooltip";
 import { default as DetailsIcon } from "@mui/icons-material/ReadMoreOutlined";
 import dummy_workspace from "assets/images/random.jpeg";
 import _head from "lodash/head";
-import { Avatar } from "@mui/material";
+import { Avatar, Dialog } from "@mui/material";
+import ProfessionalDetails from "../../People/components/UserCard/components/ProfessionalDetails";
+import { useToggle } from "react-use";
 
 const iconStyle = {
   height: 23,
@@ -19,6 +21,7 @@ const avatarStyle = {
 
 function ContentCard(props) {
   const { type, content } = props;
+  const [open, toggle] = useToggle(false);
 
   const renderContent = useCallback(() => {
     if (type === "USER") {
@@ -35,7 +38,7 @@ function ContentCard(props) {
             </div>
           </div>
           <div className="flex items-center gap-x-2">
-            <button>
+            <button onClick={toggle}>
               <Tooltip title="Show details">
                 <DetailsIcon
                   className="bg-gray-100 rounded-2xl p-1"
@@ -44,6 +47,9 @@ function ContentCard(props) {
               </Tooltip>
             </button>
           </div>
+          <Dialog open={open} onClose={toggle}>
+            <ProfessionalDetails toggle={toggle} {...content} />
+          </Dialog>
         </>
       );
     }
@@ -62,21 +68,11 @@ function ContentCard(props) {
               <p className="text-gray-500 text-xs">Contact: {mobileNo}</p>
             </div>
           </div>
-          <div className="flex items-center gap-x-2">
-            <button>
-              <Tooltip title="Show details">
-                <DetailsIcon
-                  className="bg-gray-100 rounded-2xl p-1"
-                  style={iconStyle}
-                />
-              </Tooltip>
-            </button>
-          </div>
         </>
       );
     }
     return null;
-  }, [content, type]);
+  }, [content, type, toggle, open]);
   return (
     <div
       className={c(

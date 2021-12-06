@@ -28,7 +28,7 @@ const priority = {
 };
 
 export const CalendarCell = React.memo((props) => {
-  const { isLast, date, actualDate, data, user } = props;
+  const { isLast, date, actualDate, data, user, toggleUpdate } = props;
   const label = getDate(date);
   const disabled =
     getDay(date) === 0 || getMonth(date) !== getMonth(actualDate);
@@ -102,7 +102,11 @@ export const CalendarCell = React.memo((props) => {
               </p>
             ) : (
               _map(getFilteredData(data), (item) => (
-                <Appointment {...item} loggedInUser={user} />
+                <Appointment
+                  {...item}
+                  loggedInUser={user}
+                  toggleUpdate={toggleUpdate}
+                />
               ))
             )}
           </div>

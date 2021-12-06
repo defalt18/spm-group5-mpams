@@ -6,11 +6,15 @@ import UpcomingAppointment from "./UpcomingAppointments";
 import { default as ContentCard } from "./ContentCard";
 import Loader from "components/Loader";
 import _isEmpty from "lodash/isEmpty";
+import { useToggle } from "react-use";
 
 function Overview(props) {
   const { user } = props;
+  const [update, updateComponent] = useToggle(false);
 
-  const { loading, contacts, appointments } = useDashboardData({ user });
+  const { loading, contacts, appointments } = useDashboardData({ user }, [
+    update,
+  ]);
 
   const content = user.accountType ? user.workspaceInfo : contacts;
 
@@ -36,7 +40,11 @@ function Overview(props) {
           />
         ) : (
           _map(appointments, (item, index) => (
-            <UpcomingAppointment key={index} {...item} />
+            <UpcomingAppointment
+              key={index}
+              {...item}
+              update={updateComponent}
+            />
           ))
         )}
         {_isEmpty(appointments) && !loading && (
@@ -46,9 +54,9 @@ function Overview(props) {
       <div className="shadow-xl bg-white h-full w-full overflow-scroll p-5 rounded-2xl relative">
         <p className="text-lg font-bold mb-3">
           {user.accountType ? (
-            <>Workspace details ({_size(user.workspaceInfo)})</>
+            <>Workspace details ({_size(content)})</>
           ) : (
-            <>Contacts ({_size(contacts)})</>
+            <>Contacts ({_size(content)})</>
           )}
         </p>
         {loading ? (

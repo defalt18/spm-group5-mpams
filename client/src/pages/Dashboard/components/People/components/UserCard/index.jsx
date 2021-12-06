@@ -42,12 +42,6 @@ function UserCard(props) {
               <DomainTwoToneIcon />
               <span>Workspaces : {_size(workspaceInfo)}</span>
             </p>{" "}
-            {/*<p className="text-base text-left flex items-center gap-x-2">*/}
-            {/*  <AccessTimeTwoToneIcon />*/}
-            {/*  <span>*/}
-            {/*    {format(new Date(start), "h")} - {format(new Date(end), "h aa")}*/}
-            {/*  </span>*/}
-            {/*</p>*/}
             <p className="text-base text-left">
               <span className="font-bold">Email : </span>
               <span>{email}</span>

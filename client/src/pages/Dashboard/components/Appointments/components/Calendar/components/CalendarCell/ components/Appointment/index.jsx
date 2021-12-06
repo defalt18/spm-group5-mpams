@@ -20,6 +20,7 @@ function Appointment(props) {
     confirmed = true,
     timestamp = Date.now(),
   } = props;
+  const { toggleUpdate, ...rest } = props;
   const { name } = requestedBy;
   const {
     loggedInUser: { accountType },
@@ -44,7 +45,7 @@ function Appointment(props) {
         </span>
       </button>
       <Dialog open={open} onClose={toggle}>
-        <AppointmentDetails {...props} toggle={toggle} />
+        <AppointmentDetails {...rest} toggle={toggle} update={toggleUpdate} />
       </Dialog>
     </>
   );
