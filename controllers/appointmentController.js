@@ -62,7 +62,7 @@ const fetchAppointmentsOfAWorkspace = async (req, res) => {
 const updateAppointment = async (req, res) => {
     const updatedAppointment = await Appointment.findByIdAndUpdate(
         req.params.id,
-        req.body
+        req.body.updationInfo
     );
     res.send({
         message: "Updated the Appointment",

@@ -143,8 +143,7 @@ app.post("/api/contacts", isLoggedIn, async (req, res) => {
 
 app.get("/api/allAppointments/:id", async (req, res, next) => {
     const currUser = await User.findById(req.params.id);
-    let appts;
-
+    let appts=[];
     if (currUser.accountType == 0) {
         appts = await User.findById(req.params.id).populate({
             path: "appointments",
@@ -155,16 +154,18 @@ app.get("/api/allAppointments/:id", async (req, res, next) => {
                 },
             },
         });
+        appts=appts.appointments;
     } else {
-        appts = {appointments : await Appointment.find({requestedTo : currUser._id}).populate({
-            path: "requestedBy",
-        })};
-        // console.log("Hey there", appts)
+        const usr = await User.findById(req.params.id);
+        for (let ws of usr.workspaceInfo)
+        {
+            appts.push(await Appointment.find({requestedTo:ws}).populate({path:"requestedBy"}))
+        }
     }
     console.log("----------------------", appts);
     res.send({
         messages: "Successful Fetch of all appointments!",
-        data: appts.appointments,
+        data: appts,
     });
 });
 
