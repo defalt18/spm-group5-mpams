@@ -13,8 +13,9 @@ function People(props) {
   const { user } = props;
   const [searchString, setSearchString] = useState("");
   const [filterParams, filterProfession] = useState({ profession: "" });
-  const { loading, value: data } = useAsync(() =>
-    fetchProfessionals(searchString)
+  const { loading, value: data } = useAsync(
+    () => fetchProfessionals(searchString, filterParams.profession),
+    [searchString, filterParams.profession]
   );
 
   const handleFilterChange = ({ target: { value } }) => {

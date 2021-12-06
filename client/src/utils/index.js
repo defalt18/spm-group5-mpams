@@ -2,8 +2,8 @@ import axios from "axios";
 import _reduce from "lodash/reduce";
 import _isEmpty from "lodash/isEmpty";
 
-const BASE_URL = "https://spm-group5-mpams.herokuapp.com/";
-// const BASE_URL = "http://localhost:8000/";
+// const BASE_URL = "https://spm-group5-mpams.herokuapp.com/";
+const BASE_URL = "http://localhost:8000/";
 
 export const setUser = async (registerUser, User) => {
   registerUser(User);
@@ -47,9 +47,14 @@ export const addWorkspaces = async (workspaces, user) => {
   );
 };
 
-export const fetchProfessionals = async (name) => {
-  const search = _isEmpty(name) ? "all" : name;
-  const result = await axios.get(BASE_URL + `api/profession/${search}`);
+export const fetchProfessionals = async (searchString, profession) => {
+  const result = await axios.post(
+    BASE_URL + `api/searchUser/${_isEmpty(profession) ? "all" : profession}`,
+    {
+      searchString,
+    }
+  );
+
   return result.data.data;
 };
 

@@ -26,11 +26,10 @@ const prioritySystem = {
 
 function UpcomingAppointment(props) {
   const { user } = useUserContext();
-  const { requestedTo, requestedFrom, timestamp, priority } = props;
-
+  const { requestedTo, requestedBy, timestamp, priority } = props;
   const name = user.accountType
-    ? requestedFrom.userInfo.name
-    : requestedTo.userInfo.name;
+    ? requestedBy?.name
+    : requestedTo?.userInfo?.name;
 
   return (
     <div

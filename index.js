@@ -143,9 +143,9 @@ app.post("/api/contacts", isLoggedIn, async (req, res) => {
 
 app.get("/api/allAppointments/:id", async (req, res, next) => {
     const currUser = await User.findById(req.params.id);
-    let appts=[];
+    let appts = [];
     if (currUser.accountType == 0) {
-        appts = await User.findById(req.params.id).populate({
+        let data = await User.findById(req.params.id).populate({
             path: "appointments",
             populate: {
                 path: "requestedTo",
@@ -154,13 +154,19 @@ app.get("/api/allAppointments/:id", async (req, res, next) => {
                 },
             },
         });
-        appts=appts.appointments;
+        appts = data.appointments;
     } else {
+        console.log("Jeyyy")
         const usr = await User.findById(req.params.id);
         for (let ws of usr.workspaceInfo)
         {
-            appts.push(await Appointment.find({requestedTo:ws}).populate({path:"requestedBy"}))
+            const data = await Appointment.find({requestedTo:ws}).populate({path:"requestedBy"})
+            console.log(data)
+            appts = appts.concat(data)
         }
+        // const data = usr.workspaceInfo.reduce(async (allAppt, ws) => {
+        //     return [...(await allAppt), ...(await Appointment.find({requestedTo:ws}).populate({path:"requestedBy"}))]
+        // }, [])
     }
     console.log("----------------------", appts);
     res.send({

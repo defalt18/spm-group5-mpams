@@ -73,7 +73,7 @@ function Overview(props) {
         <div>
           <p className="text-lg font-bold mb-3">Total appointments</p>
           <p className="text-8xl font-bold text-center">
-            {_size(user.appointments)}
+            {_size(appointments)}
           </p>
         </div>
       </div>
