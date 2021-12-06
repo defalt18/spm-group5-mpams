@@ -1,7 +1,9 @@
 const User = require("../models/user");
 
 const googleCallbackHandler = async (req, res) => {
-  const info = await User.findOne({ email: req.user.email });
+  const info = await User.findOne({ email: req.user.email }).populate(
+      {path: "workspaceInfo"}
+  );
   if (!info) {
     const newUser = new User({
       email: req.user.email,

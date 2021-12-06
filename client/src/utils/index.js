@@ -82,3 +82,11 @@ export const fetchAppointmentsForMonth = async (user, date) => {
     })
   ).data.data;
 };
+
+export const fetchContacts = async (user) => {
+  return await axios.post(BASE_URL + "api/contacts", { user });
+};
+
+export const fetchAppointmentDetailsById = async (user) => {
+  return await axios.get(BASE_URL + `api/allAppointments/${user._id}`);
+};
