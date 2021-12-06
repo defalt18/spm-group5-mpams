@@ -115,13 +115,18 @@ app.post("/api/searchUser/:profession", async (req, res) => {
     }
 });
 
-app.get("/api/contacts", isLoggedIn, async (req, res) => {
+const Workspace = require("./models/workspace")
+const Appointment = require("./models/appointment");
+
+app.post("/api/contacts", isLoggedIn, async (req, res) => {
     const user = await User.findById(req.user._id);
     const allAppointments = user.appointments;
 
     const newSet = new Set();
     for (let apt of allAppointments) {
-        const ws = await Workspace.findById(apt.requestedTo);
+        const apo = await Appointment.findById(apt)
+        const ws = await Workspace.findById(apo.requestedTo);
+        // console.log(ws)
         newSet.add(ws.userInfo);
     }
 
@@ -133,6 +138,33 @@ app.get("/api/contacts", isLoggedIn, async (req, res) => {
     res.send({
         messages: "Successful Fetch of Contacts!",
         data: ctcs,
+    });
+});
+
+app.get("/api/allAppointments/:id", async (req, res, next) => {
+    const currUser = await User.findById(req.params.id);
+    let appts;
+
+    if (currUser.accountType == 0) {
+        appts = await User.findById(req.params.id).populate({
+            path: "appointments",
+            populate: {
+                path: "requestedTo",
+                populate: {
+                    path: "userInfo",
+                },
+            },
+        });
+    } else {
+        appts = {appointments : await Appointment.find({requestedTo : currUser._id}).populate({
+            path: "requestedBy",
+        })};
+        // console.log("Hey there", appts)
+    }
+    console.log("----------------------", appts);
+    res.send({
+        messages: "Successful Fetch of all appointments!",
+        data: appts.appointments,
     });
 });
 
