@@ -53,13 +53,13 @@ function People(props) {
   };
 
   return (
-    <div className="flex-1 bg-gray-100 p-8">
+    <div className="flex-1 bg-gray-100 p-8 flex flex-col">
       <p className="font-bold text-2xl mb-4">Professionals</p>
       <div className="flex justify-between items-center w-full">
         <Select className="w-72" handleChange={handleFilterChange} />
         <Search setSearchString={setSearchString} />
       </div>
-      {renderContent()}
+      <div className="overflow-scroll flex-1 mt-6">{renderContent()}</div>
     </div>
   );
 }
