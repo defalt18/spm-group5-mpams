@@ -19,6 +19,7 @@ import { useAsync, useToggle } from "react-use";
 import { createAppointment, fetchWorkspaces } from "utils";
 import Loader from "components/Loader";
 import { useUserContext } from "hooks/useUser";
+import _isEmpty from "lodash/isEmpty";
 
 function Creator(props) {
   const { user } = useUserContext();
@@ -47,6 +48,11 @@ function Creator(props) {
   // console.log(workspaces, workspaceInfo);
   const onNext = useCallback(async () => {
     toggleLoading();
+    if (_isEmpty(appointmentDetails.requestedTo)) {
+      alert("Please select workspace");
+      toggleLoading();
+      return;
+    }
     await createAppointment(user, appointmentDetails, email).catch((err) =>
       alert(err.message)
     );
