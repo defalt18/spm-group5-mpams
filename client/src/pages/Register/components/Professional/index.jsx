@@ -8,8 +8,9 @@ import { DASHBOARD } from "../../../../routes";
 import { useHistory } from "react-router-dom";
 
 function Professional(props) {
-  const { context } = props;
+  const { context, uiLoader } = props;
   const { user, setUser: setContext } = context;
+  const [_, toggleLoading] = uiLoader;
   const history = useHistory();
   const [userDetails, setDetails] = useState({
     ...user,
@@ -26,6 +27,7 @@ function Professional(props) {
   );
 
   const onClick = useCallback(async () => {
+    toggleLoading();
     const { address, ...userdata } = userDetails;
     const mongoUser = await registerUser(userdata);
     const wsIDs = await addWorkspaces(workspaces, mongoUser.data);
@@ -35,7 +37,8 @@ function Professional(props) {
       workspaceInfo: wsIDs,
     });
     history.push(DASHBOARD);
-  }, [userDetails, workspaces, history, setContext]);
+    toggleLoading();
+  }, [userDetails, workspaces, history, setContext, toggleLoading]);
 
   return (
     <>

@@ -8,6 +8,8 @@ import avatar_pro from "assets/images/avatar_professional.png";
 import Professional from "./components/Professional";
 import UserForm from "./components/User";
 import _map from "lodash/map";
+import { useToggle } from "react-use";
+import Loader from "../../components/Loader";
 
 const avatarStyles = {
   height: 130,
@@ -29,7 +31,17 @@ const USER_TYPES = [
 
 function Register() {
   const context = useUserContext();
+  const uiLoader = useToggle(false);
+  const [loading, _] = uiLoader;
   const [accountType, setType] = useState(0);
+
+  if (loading)
+    return (
+      <Loader
+        className="h-screen w-screen grid place-items-center"
+        type="bird"
+      />
+    );
 
   return (
     <Page className="grid place-items-center bg-gray-800">
@@ -56,9 +68,9 @@ function Register() {
           ))}
         </div>
         {accountType ? (
-          <Professional context={context} />
+          <Professional context={context} uiLoader={uiLoader} />
         ) : (
-          <UserForm context={context} />
+          <UserForm context={context} uiLoader={uiLoader} />
         )}
       </div>
     </Page>

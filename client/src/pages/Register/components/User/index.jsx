@@ -5,8 +5,9 @@ import { useHistory } from "react-router-dom";
 import { DASHBOARD } from "routes";
 
 function UserForm(props) {
-  const { context } = props;
+  const { context, uiLoader } = props;
   const { user, setUser } = context;
+  const [_, toggleLoading] = uiLoader;
   const history = useHistory();
   const [userDetails, setDetails] = useState({ ...user, accountType: 0 });
   const handleChange = useCallback(
@@ -18,11 +19,13 @@ function UserForm(props) {
   );
 
   const onClick = useCallback(async () => {
+    toggleLoading();
     const { address, ...userdata } = userDetails;
     const result = await registerUser(userdata);
     setUser({ ...userDetails, ...result });
     history.push(DASHBOARD);
-  }, [userDetails, history, setUser]);
+    toggleLoading();
+  }, [userDetails, history, setUser, toggleLoading]);
 
   return (
     <>
