@@ -17,9 +17,18 @@
 
 ## About the Project
 
-[//]: # (<img width="100%" alt="booking-screen" src="https://github.com/calcom/cal.com/assets/8019099/407e727e-ff19-4ca4-bcae-049dca05cf02">)
+[//]: # (![mpams.gif]&#40;assets%2Fmpams.gif&#41;)
+
+<img width="100%" alt="scheduling-screen" src="https://github.com/defalt18/spm-group5-mpams/assets/mpams.gif">
 
 # Appointment Scheduling for All Professionals
+
+## How to setup
+
+### Client
+
+### Server
+
 
 
 
